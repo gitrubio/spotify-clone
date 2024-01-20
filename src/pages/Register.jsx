@@ -2,71 +2,80 @@ import React, { useState } from 'react'
 import { authSingUp } from '../redux/services/authServices';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
 export default function Register() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null)
+    const [loading,setLoading] = useState(false)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const handleLogin = () => {
+    const handleRegistre = (e) => {
+        e.preventDefault()
         setLoading(true)
-        dispatch(authSingUp({ username, email, password, roles: ["admin"] }, (error) => {
+        dispatch(authSingUp({ username, email, password, roles: ["admin"] }, (error = null) => {
             if (error) {
-                setError(error)
+                toast(error, {type: 'error'})
                 setLoading(false)
              } else {
+                toast('User created successfully')
                 setLoading(false)
                 navigate('/')
             }
         }))
     }
     return (
-        <div className="flex w-full h-screen ">
+        <div className="flex w-full h-screen bg-gradient-to-br from-black to-[#121286]  ">
+            
             <div className="w-full flex items-center justify-center lg:w-1/2">
-                <div className=' w-11/12 max-w-[700px] px-10 py-20 rounded-3xl bg-white border-2 border-gray-100'>
-                    <h1 className='text-5xl font-semibold'>Welcome to Sputify </h1>
-                    <p className='font-medium text-lg text-gray-500 mt-4'>Please enter your information</p>
-                    <div className='mt-8'>
+                <div className=' w-11/12 max-w-[700px] px-10 py-20 rounded-3xl bg-black border-2 border-black'>
+                    <h1 className='text-5xl font-semibold text-white'>Welcome to Sputify </h1>
+                    <p className='font-medium text-lg  mt-4 text-white'>Please enter your information</p>
+                    <form className='mt-8' onSubmit={handleRegistre} autoComplete="off">
                         <div className='flex flex-col'>
-                            <label className='text-lg font-medium'>Name</label>
+                            <label className='text-lg font-medium text-white'>Name</label>
                             <input
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
-                                placeholder="Enter your name" />
+                                className='w-full text-white border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                                placeholder="Enter your name" 
+                                type='text' 
+                                required
+                                />
                         </div>
-                        <div className='flex flex-col'>
-                            <label className='text-lg font-medium'>Email</label>
+                        <div className='flex flex-col '>
+                            <label className='text-lg font-medium text-white'>Email</label>
                             <input
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
-                                placeholder="Enter your email" />
+                                className='w-full border-2 text-white border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                                placeholder="Enter your email" 
+                                type='email'
+                                required
+                                />
                         </div>
                         <div className='flex flex-col mt-4'>
-                            <label className='text-lg font-medium'>Password</label>
+                            <label className='text-lg font-medium text-white'>Password</label>
                             <input
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className='w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
+                                className='w-full text-white border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent'
                                 placeholder="Enter your email"
                                 type={"password"}
+                                required
                             />
                         </div>
 
-                        <div className='mt-8 flex flex-col gap-y-4'>
+                       
                             <button
                                 disabled={loading}
-                                onClick={handleLogin}
-                                className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-4 bg-red-500 rounded-xl text-white font-bold text-lg'>Sign up</button>
+                                type='submit'
+                                className='w-full mb-4 mt-4 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-4 bg-red-500 rounded-xl text-white font-bold text-lg'>Sign up</button>
                             <button
                                 disabled={loading}
-                                className='flex items-center justify-center gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-4  rounded-xl text-gray-700 font-semibold text-lg border-2 border-gray-100 '>
+                                className=' text-white flex w-full items-center justify-center gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-4  rounded-xl font-semibold text-lg border-2 border-gray-100 '>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5.26644 9.76453C6.19903 6.93863 8.85469 4.90909 12.0002 4.90909C13.6912 4.90909 15.2184 5.50909 16.4184 6.49091L19.9093 3C17.7821 1.14545 15.0548 0 12.0002 0C7.27031 0 3.19799 2.6983 1.24023 6.65002L5.26644 9.76453Z" fill="#EA4335" />
                                     <path d="M16.0406 18.0142C14.9508 18.718 13.5659 19.0926 11.9998 19.0926C8.86633 19.0926 6.21896 17.0785 5.27682 14.2695L1.2373 17.3366C3.19263 21.2953 7.26484 24.0017 11.9998 24.0017C14.9327 24.0017 17.7352 22.959 19.834 21.0012L16.0406 18.0142Z" fill="#34A853" />
@@ -75,13 +84,18 @@ export default function Register() {
                                 </svg>
                                 Sign up with Google
                             </button>
-                        </div>
-                    </div>
+                            <div className='mt-8 flex justify-center items-center'>
+                    <p className='font-medium text-base text-white'>You have an account?</p>
+                    <button 
+                        onClick={() => navigate('/login')}
+                        className='ml-2 font-medium text-base text-red-500'>Sign in</button>
+                </div>
+                    </form>
                 </div>
             </div>
             <div className="hidden relative w-1/2 h-full lg:flex items-center justify-center ">
                 <div className="w-60 h-60 rounded-full bg-gradient-to-tr from-pink-400 to-red-500 animate-spin" />
-                <div className="w-full h-1/2 absolute bottom-0 bg-white/10 backdrop-blur-lg" />
+              
             </div>
         </div>
     )

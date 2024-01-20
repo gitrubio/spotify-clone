@@ -27,11 +27,10 @@ const authSlice = createSlice({
 
     logout: (state, action) => {
       state.status = "not-authenticated";
-      state.uid = null;
-      state.email = null;
-      state.displayName = null;
-      state.photoURL = null;
-      state.errorMessage = action.payload?.errorMessage;
+      state.token =  null
+      state.email =  null
+      state.displayName =  null
+      state.errorMessage  =  null
       localStorage.removeItem('auth')
     },
   },
