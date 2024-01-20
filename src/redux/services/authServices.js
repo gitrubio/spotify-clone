@@ -29,11 +29,8 @@
 
 import axios from "axios"
 import { login } from "../features/authSlice";
-import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
-
-export const authSingUp = (user) => {
+export const authSingUp = (user,callback) => {
 	return async (dispatch) => {
 		const {data} = await  axios.post('http://authorization-7v3n.onrender.com/api/auth/signup',user)
 		if (data) {
@@ -45,7 +42,7 @@ export const authSingUp = (user) => {
                     displayName: user.username,
 				})
 			)
-            navigate('/')
+            
 		} else {
 			
 		}
